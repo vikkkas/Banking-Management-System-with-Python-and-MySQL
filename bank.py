@@ -21,6 +21,7 @@ class bank:
         self.id=StringVar()
         self.acc_no=StringVar()
         self.acc_type=StringVar()
+        self.acc_bal=StringVar()
         
         lbltitle=Label(self.root,bd=20,relief=RIDGE,text="BANK MANAGEMENT SYSTEM",fg='red',bg='white',font=("times new roman",50,"bold"))
         lbltitle.pack(side=TOP,fill=X)
@@ -96,10 +97,10 @@ class bank:
         comAcc_Type.current(0)
         comAcc_Type.grid(row=7,column=1)
         
-        # lblage=Label(dataframeLeft,font=("arial",12,"bold"),text="Age",padx=2,pady=6)
-        # lblage.grid(row=8,column=0, sticky=W)
-        # txtage=Entry(dataframeLeft,font=("arial",13, "bold"),width=35)
-        # txtage.grid(row=8,column=1)
+        lblbal=Label(dataframeLeft,font=("arial",12,"bold"),text="Balance",padx=2,pady=6)
+        lblbal.grid(row=8,column=0, sticky=W)
+        txtbal=Entry(dataframeLeft,textvariable=self.acc_bal,font=("arial",13, "bold"),width=35)
+        txtbal.grid(row=8,column=1)
         
         #======================================dataframe right========================================================
         self.txtaccount=Text(dataframeright,font=("arial",12,"bold"),width=50,height=16,padx=2,pady=6)
@@ -169,7 +170,7 @@ class bank:
         else:
             conn=mysql.connector.connect(host="localhost",username="root",password="Vikas654321",database="bank_data")
             my_cursor=conn.cursor()
-            my_cursor.execute("Insert into bank values(%s,%s,%s,%s,%s,%s,%s,%s)",(self.salutation.get(),self.firstname.get(),self.lastname.get(),self.aadhar.get(),self.pan.get(),self.id.get(),self.acc_no.get(),self.acc_type.get()))
+            my_cursor.execute("Insert into bank values(%s,%s,%s,%s,%s,%s,%s,%s,%s)",(self.salutation.get(),self.firstname.get(),self.lastname.get(),self.aadhar.get(),self.pan.get(),self.id.get(),self.acc_no.get(),self.acc_type.get(),self.acc_bal.get()))
             conn.commit()
             self.fetch_data()
             conn.close()
@@ -185,6 +186,7 @@ class bank:
             for i in rows:
                 self.bank_table.insert("",END,values=i)
             conn.commit()
+            
         conn.close()
     
     
@@ -204,7 +206,7 @@ class bank:
     def update_data(self):
         conn=mysql.connector.connect(host="localhost",user="root",password="Vikas654321",database="bank_data")
         my_cursor=conn.cursor()
-        sql_command="Update bank SET salutation=%s,first_name=%s,last_name=%s,aadhar=%s,pan=%s,customer_id=%s,acc_no=%s,acc_type=%s where aadhar=%s"
+        sql_command="Update bank SET salutation=%s,first_name=%s,last_name=%s,aadhar=%s,pan=%s,customer_id=%s,acc_no=%s,acc_type=%s,balance=%s where aadhar=%s"
         salutation=self.salutation.get()
         first_name=self.firstname.get()
         last_name=self.lastname.get()
@@ -213,8 +215,8 @@ class bank:
         customer_id=self.id.get()
         account_no=self.acc_no.get()
         account_type=self.acc_type.get()
-
-        inputs=(salutation,first_name,last_name,aadhar,pan,customer_id,account_no,account_type,aadhar)
+        account_balance=self.acc_bal.get()
+        inputs=(salutation,first_name,last_name,aadhar,pan,customer_id,account_no,account_type,account_balance,aadhar)
 
         my_cursor.execute(sql_command,inputs)
 
@@ -223,7 +225,7 @@ class bank:
         conn.close()
 
         messagebox.showinfo("Update","Record has been updated successfully.")
-        
+
     def iaccount_info(self):
         self.txtaccount.insert(END,"Full Name:\t\t\t"+self.salutation.get()+" "+self.firstname.get()+" ",self.lastname.get()+"\n");
         self.txtaccount.insert(END,"\n\nAadhar No:\t\t\t"+self.aadhar.get()+"\n")
@@ -231,6 +233,7 @@ class bank:
         self.txtaccount.insert(END,"\nCustomer id:\t\t\t"+self.id.get()+"\n")
         self.txtaccount.insert(END,"\nAccount Number:\t\t\t"+self.acc_no.get()+"\n")
         self.txtaccount.insert(END,"\nAccount Type:\t\t\t"+self.acc_type.get()+"\n")
+        self.txtaccount.insert(END,"\nAccount Balance:\t\t\t"+self.acc_bal.get()+"\n")
         
     def idelete(self):
         conn=mysql.connector.connect(host="localhost",user="root",password="Vikas654321",database="bank_data")
@@ -253,6 +256,7 @@ class bank:
         self.id.set("")
         self.acc_no.set("")
         self.acc_type.set("")
+        self.acc_bal.set("")
         self.txtaccount.delete("1.0",END)
     
     def iexit(self):
