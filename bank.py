@@ -204,8 +204,7 @@ class bank:
     def update_data(self):
         conn=mysql.connector.connect(host="localhost",user="root",password="Vikas654321",database="bank_data")
         my_cursor=conn.cursor()
-        # my_cursor.execute("Update bank set Salutation='%s'"),(self.salutation.get())
-        sql_command="Update bank SET Salutation=%s,First Name=%s,Last Name=%s,Aadhar=%s,PAN=%s,Customer id=%s,Account No=%s,Account Type=%s where Aadhar=%s"
+        sql_command="Update bank SET salutation=%s,first_name=%s,last_name=%s,aadhar=%s,pan=%s,customer_id=%s,acc_no=%s,acc_type=%s where aadhar=%s"
         salutation=self.salutation.get()
         first_name=self.firstname.get()
         last_name=self.lastname.get()
@@ -218,14 +217,13 @@ class bank:
         inputs=(salutation,first_name,last_name,aadhar,pan,customer_id,account_no,account_type,aadhar)
 
         my_cursor.execute(sql_command,inputs)
-        # my_cursor.execute('Update bank SET Salutation=%s,First Name=%s,Last Name=%s,Aadhar=%s,PAN=%s,Customer id=%s,Account No=%s,Account Type=%s where Aadhar=%s'),(self.salutation.get(),self.firstname.get(),self.lastname.get(),self.aadhar.get(),self.pan.get(),self.id.get(),self.acc_no.get(),self.acc_type.get())
-        # my_cursor.execute("Update bank SET Salutation='%s',First Name='%s',Last Name='%s',Aadhar='%s',PAN='%s',Customer id='%s',Account No.='%s',Account Type='%s' where aadhar='%s'"),(self.salutation.get(),self.firstname.get(),self.lastname.get(),self.aadhar.get(),self.pan.get(),self.id.get(),self.acc_no.get(),self.acc_type.get(),self.aadhar.get())
 
         conn.commit()
         self.fetch_data()
         conn.close()
 
         messagebox.showinfo("Update","Record has been updated successfully.")
+        
     def iaccount_info(self):
         self.txtaccount.insert(END,"Full Name:\t\t\t"+self.salutation.get()+" "+self.firstname.get()+" ",self.lastname.get()+"\n");
         self.txtaccount.insert(END,"\n\nAadhar No:\t\t\t"+self.aadhar.get()+"\n")
