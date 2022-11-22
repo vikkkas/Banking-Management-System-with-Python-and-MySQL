@@ -202,6 +202,7 @@ class bank:
         self.id.set(row[5])
         self.acc_no.set(row[6])
         self.acc_type.set(row[7])
+        self.acc_bal.set(row[8])
         
     def update_data(self):
         conn=mysql.connector.connect(host="localhost",user="root",password="Vikas654321",database="bank_data")
